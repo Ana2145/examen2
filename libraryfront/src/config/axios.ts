@@ -1,10 +1,12 @@
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 
-const SERVER_URL = process.env.VUE_APP_PASS_BASE_URL;
+// Configuración de Axios con la URL base
+const baseURL = process.env.VUE_APP_PASS_BASE_URL;
+const axiosInstance = axios.create({
+  baseURL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-const instance: AxiosInstance = axios.create({
-    baseURL: SERVER_URL,
-    timeout: 10000
-})
-
-export default instance;
+export default axiosInstance;

@@ -1,18 +1,23 @@
-import { AxiosRequestConfig } from 'axios';
 import AxiosClient from './axios';
 
-export default {
-    doGet (endPoint: string, config?: AxiosRequestConfig){
-        return AxiosClient.get(endPoint, config);
-    },
-    doPost (endPoint: string, object: object, config?: AxiosRequestConfig){
-        return AxiosClient.post(endPoint, object, config);
-    },
-    doPut (endPoint: string, object: object, config?: AxiosRequestConfig){
-        return AxiosClient.put(endPoint, object, config);
-    },
-    doDelete (endPoint: string, config: AxiosRequestConfig){
-        return AxiosClient.delete(endPoint, config);
+export default class HttpClientGateway {
+    constructor() {
+        this.axios = AxiosClient;
     }
     
+    async get(url, params = {}) {
+        return this.axios.get(url, { params });
+    }
+    
+    async post(url, data) {
+        return this.axios.post(url, data);
+    }
+    
+    async put(url, data) {
+        return this.axios.put(url, data);
+    }
+    
+    async delete(url) {
+        return this.axios.delete(url);
+    }
 }
