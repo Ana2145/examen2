@@ -8,98 +8,91 @@
                     <b-button @click="filtroFecha">Ordenar por fecha</b-button>
 
                     <div>
-                        <b-card-group deck>
-                            <b-row>
-                                <b-col cols="12" md="6" lg="4" class="mb-4" v-for="libro in libros" :key="libro">
-                                    
-                                    <b-card>
-                                        <b-card :title="libro.title">
-                                            <b-card-text>{{ libro.author }}</b-card-text>
-                                            <b-card-text>{{ libro.publicationDate }}</b-card-text>
+                        <draggable class="list-group" v-model="libros" @start="drag=true" @end="drag=false">
+                            <transition-group>
+                                <b-row v-for="(libro, index) in libros" :key="libro.id" @dblclick="removeBook(index)">
+                                    <b-col cols="12" md="6" lg="4" class="mb-4">
+                                        <b-card>
+                                            <b-card :title="libro.title">
+                                                <b-card-text>{{ libro.author }}</b-card-text>
+                                                <b-card-text>{{ libro.publicationDate }}</b-card-text>
+                                            </b-card>
                                         </b-card>
-                                    </b-card>
-
-                                </b-col>
-                            </b-row>
-                        </b-card-group>
+                                    </b-col>
+                                </b-row>
+                            </transition-group>
+                        </draggable>
                     </div>
                 </b-col>
-                <b-col>
-                    <div>
-                        <b-button v-b-modal.modal-prevent-closing variant="success"
-                            @click="$bvModal.show('bv-modal-example')">+</b-button>
-
-                        <b-modal id="modal-prevent-closing" ref="modal" title="Registro del libro" hide-footer>
-                            <form ref="form" @submit.stop.prevent="handleSubmit">
-                                <b-form-group label="Nombre del libro" label-for="name-input"
-                                    invalid-feedback="Name is required" >
-                                    <b-form-input id="name-input" v-model="form.title">
-                                    </b-form-input>
-                                </b-form-group>
-
-                                <b-form-group label="Autor" label-for="autor-input" invalid-feedback="Name is required"> 
-                                    <b-form-input id="autor-input" v-model="form.author">
-                                    </b-form-input>
-                                </b-form-group>
-
-                                <b-form-group label="Fecha de publicacion" label-for="date-input"
-                                    invalid-feedback="Date is required" >
-                                    <b-form-input id="date-input" v-model="form.publicationDate">
-                                    </b-form-input>
-                                </b-form-group>
-
-
-                                <b-button class="mt-3" variant="danger" block @click="hideModal">Close Me</b-button>
-                                <b-button class="mt-2" variant="success" type="submit" block>Aceptar</b-button>
-                            </form>
-                        </b-modal>
-                    </div>
-
-                    <b-button variant="warning"><b-icon icon="pen" aria-hidden="true"></b-icon></b-button>
-                    <b-button variant="danger"><b-icon icon="trash" aria-hidden="true"></b-icon>
-                    </b-button>
-                </b-col>
+                <!-- Resto de tu componente -->
             </b-row>
         </b-container>
     </div>
 </template>
 
 <script>
-import { getAllLibros, ordenAutor, ordenFecha, agregarlibro, actualizarlibros, borrarLibros } from "../services/axios";
+import draggable from 'vuedraggable';
 import Carrousel from './Carrousel.vue';
+
 export default {
     components: {
         Carrousel,
+        draggable
     },
     data() {
         return {
-            libros: [],
+            libros: [
+                { id: 1, title: "Cien años de soledad", author: "Gabriel García Márquez", publicationDate: "1967" },
+                { id: 2, title: "1984", author: "George Orwell", publicationDate: "1949" },
+                { id: 3, title: "El señor de los anillos", author: "J.R.R. Tolkien", publicationDate: "1954" },
+                { id: 4, title: "El principito", author: "Antoine de Saint-Exupéry", publicationDate: "1943" },
+                { id: 5, title: "Harry Potter y la piedra filosofal", author: "J.K. Rowling", publicationDate: "1997" }
+            ],
             form: {
                 title: '',
                 author: '',
                 publicationDate: null,
             },
+            drag: false
         }
     },
     mounted() {
-    this.getAllLibros();
+        // Inicializa tus libros aquí
     },
     methods: {
-        async getAllLibros() {
-            try {
-                let res = await getAllLibros();
-                this.libros = res.data;
-                console.log(this.libros)
-            } catch (error) {
-                console.log("Error al encontrar libros", error);
+        removeBook(index) {
+            if (this.drag) {
+                // Evita eliminar el libro si el evento se desencadena debido al drag and drop
+                return;
             }
+            this.libros.splice(index, 1); // Elimina el libro al hacer doble clic en él
         },
+        filtroAutor() {
+        this.libros.sort((a, b) => {
+            let fa = a.author.toLowerCase(),
+                fb = b.author.toLowerCase();
 
-        hideModal() {
-            this.$refs['modal'].hide()
-        },
+            if (fa < fb) {
+                return -1;
+            }
+            if (fa > fb) {
+                return 1;
+            }
+            return 0;
+        });
+    },
+
+    filtroFecha() {
+        this.libros.sort((a, b) => {
+            // Asumiendo que publicationDate es una cadena en formato 'YYYY'
+            // Para formatos diferentes es necesario adaptar la conversión.
+            return a.publicationDate - b.publicationDate;
+        });
+    },
     }
 };
 </script>
 
-<style></style>
+<style>
+/* Añade estilos si es necesario */
+</style>
