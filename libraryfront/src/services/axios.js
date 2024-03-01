@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let URL_BASE = "http://localhost:8080/"
+let URL_BASE = "http://localhost:5173/"
 
 const getAllLibros = async() =>{
     try{
@@ -13,7 +13,7 @@ const getAllLibros = async() =>{
 
 const ordenAutor = async() =>{
     try{
-        const res = await axios.get(`${URL_BASE}api/library/autorAsc`);
+        const res = await axios.get(`${URL_BASE}api/library/author`);
         return res.data;
     }catch(error){
         throw error;
@@ -22,7 +22,7 @@ const ordenAutor = async() =>{
 
 const ordenFecha = async() =>{
     try{
-        const res = await axios.get(`${URL_BASE}api/library/latest`)
+        const res = await axios.get(`${URL_BASE}api/library/publicationDate`)
         return res.data;
     }catch(error){
         throw error;

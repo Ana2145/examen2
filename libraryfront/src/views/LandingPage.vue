@@ -57,8 +57,8 @@
         <b-col md="4" class="mb-1">
           <strong>Actions:</strong>
           <b-button-group>
-            <b-button class="orden" variant="primary">Add</b-button>
-            <b-button class="orden" variant="primary">Edit</b-button>
+            <b-button v-b-modal.addd class="orden" variant="primary">Add</b-button>
+            <b-button v-b-modal.edittt class="orden" variant="primary">Edit</b-button>
             <b-button class="orden" variant="primary">Delete</b-button>
           </b-button-group>
         </b-col>
@@ -192,11 +192,26 @@
     <footer class="bg-dark text-light text-center py-3">
       <p>&copy;Library</p>
     </footer>
+    <Addd />
+    <Edittt />
   </div>
 </template>
 
 <script>
-export default {};
+
+import Vue from 'vue';
+export default Vue.extend({
+  name: 'LandingPage',
+  comments: {
+    Addd: () => import('../components/Addd.vue'),
+    Edittt: () => import('../components/Edittt.vue'),
+  },
+  methods: {
+    hideAddModal() {
+      this.$root.$emit("bv::modal::hide", "addd");
+    },
+  },
+});
 </script>
 
 <style>
