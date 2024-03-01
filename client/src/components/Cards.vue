@@ -1,3 +1,4 @@
+import draggable from 'vuedraggable';
 <template>
     <div>
       <header class="bg-dark text-light text-center py-5">
@@ -114,13 +115,25 @@
   </template>
   
   <script>
+import draggable from 'vuedraggable';
+
   export default {
+    components: {
+        draggable
+    },
     data() {
       return {
         libros: [
           { id: 1, title: "1984", author: "George Orwell", publicationDate: "1949", imgSrc: "https://picsum.photos/200/300?random=1" },
           { id: 2, title: "Cien años de soledad", author: "Gabriel García Márquez", publicationDate: "1967", imgSrc: "https://picsum.photos/200/300?random=2" },
-          { id: 3, title: "El principito", author: "Antoine de Saint-Exupéry", publicationDate: "1943", imgSrc: "https://picsum.photos/200/300?random=3" }
+          { id: 3, title: "El principito", author: "Antoine de Saint-Exupéry", publicationDate: "1943", imgSrc: "https://picsum.photos/200/300?random=3" },
+          { id: 4, title: "El señor de los anillos", author: "J.R.R. Tolkien", publicationDate: "1954", imgSrc: "https://picsum.photos/200/300?random=4" },
+          { id: 5, title: "Don Quijote de la Mancha", author: "Miguel de Cervantes", publicationDate: "1605", imgSrc: "https://picsum.photos/200/300?random=5" },
+          { id: 6, title: "La Odisea", author: "Homero", publicationDate: "VIII a.C.", imgSrc: "https://picsum.photos/200/300?random=6" },
+          { id: 7, title: "La Iliada", author: "Homero", publicationDate: "VIII a.C.", imgSrc: "https://picsum.photos/200/300?random=7" },
+          { id: 8, title: "La metamorfosis", author: "Franz Kafka", publicationDate: "1915", imgSrc: "https://picsum.photos/200/300?random=8" },
+          { id: 9, title: "La divina comedia", author: "Dante Alighieri", publicationDate: "1320", imgSrc: "https://picsum.photos/200/300?random=9" },
+          { id: 10, title: "La guerra y la paz", author: "León Tolstói", publicationDate: "1869", imgSrc: "https://picsum.photos/200/300?random=10" }
         ]
       };
     },
